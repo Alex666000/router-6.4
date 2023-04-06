@@ -1,4 +1,4 @@
-import {useEffect,Suspense} from "react";
+import {useEffect, Suspense} from "react";
 import {Await, defer, Link, useLoaderData, useSearchParams} from "react-router-dom";
 import {BlogFilter} from "../components/BlogFilter";
 
@@ -39,17 +39,18 @@ const Blogpage = () => {
                 {/* Await - это роутеровская компонента */}
                 <Await resolve={posts}>
                     {
-                        (resolvedPosts) => (<>
-                            {
-                                resolvedPosts.filter(
-                                    post => post.title.includes(postQuery) && post.id >= startsFrom
-                                ).map(post => (
-                                    <Link key={post.id} to={`/posts/${post.id}`}>
-                                        <li>{post.title}</li>
-                                    </Link>
-                                ))
-                            }
-                        </>)
+                        (resolvedPosts) => (
+                            <>
+                                {
+                                    resolvedPosts.filter(
+                                        post => post.title.includes(postQuery) && post.id >= startsFrom
+                                    ).map(post => (
+                                        <Link key={post.id} to={`/posts/${post.id}`}>
+                                            <li>{post.title}</li>
+                                        </Link>
+                                    ))
+                                }
+                            </>)
                     }
                 </Await>
             </Suspense>
@@ -67,9 +68,9 @@ const blogLoader = async ({request, params}) => {
     return defer(
         // возвращаем объект
         {
-        //будут посты которые получим так:
-        posts: getPosts()
-    })
+            //будут посты которые получим так:
+            posts: getPosts()
+        })
         ;
 };
 // используем лоадер в Арр...
@@ -95,10 +96,9 @@ const blogLoader = async ({request, params}) => {
  минусы такого подхода - ждем пока страница подгрузится....библа предоставляет хелпер defer - с можем
  ожидать когда какая-то часть данных будет получены
 
- далее defer реализацию см в Postpage....
+ далее 2 вариант -- defer реализацию см в Postpage....вынесли в компонент отдельный отрисовку и в ней тогда обязательно раз вынесли...
+ если б не выносили как тут то не надо было бы делать useAsyncValue
 
-
-
-
+  defer - разделяет сущности -- он в принципе не нужен можно без него - мы сделали с ним для разделения сущностей
 
  */
