@@ -19,18 +19,22 @@ function App() {
             <Routes>
                 <Route path="/" element={<Layout/>}>
                     <Route index element={<Homepage/>}/>
+
+                    {/*далее что-то есть после путя about*/}
+                    <Route path="about/*" element={<About/>}/>
+
                     <Route path="about" element={<About/>}/>
-                    {/*переадресация -- но чтобы не сохранилось в истории посещение этого адреса
+                    {/* переадресация -- но чтобы не сохранилось в истории посещение этого адреса
                     передаем дополнительно
                     */}
                     <Route path="about-us" element={<Navigate to={"/about"} replace/>}/>
                     <Route path="posts" element={<Blogpage/>}/>
-                    {/*динамический параметр*/}
+                    {/* динамический параметр*/}
                     <Route path="posts/:id" element={<Postpage/>}/>
-                    {/*хотим чтобы роут был завязан на этой айдишник но отдельный адрес /edit*/}
+                    {/* хотим чтобы роут был завязан на этой айдишник но отдельный адрес /edit*/}
                     <Route path="posts/:id/edit" element={<Editpost/>}/>
 
-                    {/*хок для переадресации в него обернем любой приватный роут*/}
+                    {/* хок для переадресации в него обернем любой приватный роут*/}
                     <Route path="posts/new" element={
                         <RequireAuth>
                             <Createpost/>
