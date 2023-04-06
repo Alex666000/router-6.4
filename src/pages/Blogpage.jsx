@@ -1,9 +1,12 @@
 import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 // на странице блога получим и отрисуем посты:
 const Blogpage = () => {
     const [posts, setPosts] = useState([]);
+    // console.log(useLocation());
+
+
 
     useEffect(() => {
         fetch("https://jsonplaceholder.typicode.com/posts")
@@ -14,7 +17,10 @@ const Blogpage = () => {
 
 // отрисовываем посты
     return (
+
         <div>
+            Our news
+            <Link to={'/posts/new'}>Добавить новый пост</Link>
             {posts.map(post => (
                 <Link key={post.id} to={`/posts/${post.id}`}>
                     <li>{post.title}</li>

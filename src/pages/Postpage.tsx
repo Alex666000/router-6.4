@@ -1,25 +1,30 @@
 import React, {useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 
-// чтобы могли вбив http://localhost:3000/posts/13 получить по id===13 страницу конкретного поста
 export const Postpage = () => {
-    // возвращает параметры те что вписали в Арр  с таким же именем т.е id
     const {id} = useParams();
-    // console.log(id);
+    // для перемещения по истории переключения страниц
+    const navigate = useNavigate();
 
-    // получаем объект
     const [post, setPost] = useState<ResponseData | null>(null);
+// для этого в разметке делаем кнопку
+    const goBack = () => navigate(-1);
 
-// id в зависимость т к будем переходить между страницами чтобы запрос делался каждый раз
+    // перейдем сразу на домашнюю стр. -- так не стоит делаеть лучше Link и перейти по ссылке...
+    // replace: true чтобы была переадресация а не движение по истории
+    const goHome = () => navigate('/',{replace: true});
+
     useEffect(() => {
         fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
             .then(res => res.json())
             .then(data => setPost(data));
     }, [id]);
 
-    // при получении конкретного поста отрисуем его на страницу
     return (
         <div>
+            {/*для перемещения по истории делаем кнопку*/}
+            <button onClick={goBack}>Go back</button>
+            <button onClick={goHome}>Go Home</button>
             {post && (
                 <>
                     <h1>{post && post.title}</h1>
