@@ -1,4 +1,10 @@
-import {Routes, Route, Navigate} from "react-router-dom";
+import {
+    Routes,
+    Route,
+    Navigate,
+    createBrowserRouter,
+    createRoutesFromElements, RouterProvider
+} from "react-router-dom";
 
 import {Homepage} from "pages/Homepage";
 import {About} from "pages/Aboutpage";
@@ -13,43 +19,34 @@ import {LoginPage} from "pages/Loginpage";
 import {RequireAuth} from "hoc/RequireAuth";
 import {AuthProvider} from "hoc/AuthProvider";
 
+
+const router = createBrowserRouter(createRoutesFromElements(
+    <Route path="/" element={<Layout/>}>
+        <Route index element={<Homepage/>}/>
+        <Route path="about/*" element={<About/>}>
+            <Route path="contacts" element={<p>Our contact</p>}/>
+            <Route path="team" element={<p>Our team</p>}/>
+        </Route>
+        <Route path="about" element={<About/>}/>
+        <Route path="about-us" element={<Navigate to={"/about"} replace/>}/>
+        <Route path="posts" element={<Blogpage/>}/>
+        <Route path="posts/:id" element={<Postpage/>}/>
+        <Route path="posts/:id/edit" element={<Editpost/>}/>
+
+        <Route path="posts/new" element={
+            <RequireAuth>
+                <Createpost/>
+            </RequireAuth>
+        }/>
+        <Route path="login" element={<LoginPage/>}/>
+        <Route path="*" element={<Notfoundpage/>}/>
+    </Route>
+))
+
 function App() {
     return (
         <AuthProvider>
-            <Routes>
-                <Route path="/" element={<Layout/>}>
-                    <Route index element={<Homepage/>}/>
-
-                    {/*далее что-то есть после путя about*/}
-                    <Route path="about/*" element={<About/>}>
-                        {/*и нужно определить в какое место приложения вставлять эти пути
-                        внутри About --- делаем с аутлетом
-                        */}
-                        <Route path="contacts" element={<p>Our contact</p>}/>
-                        <Route path="team" element={<p>Our team</p>}/>
-                    </Route>
-
-                    <Route path="about" element={<About/>}/>
-                    {/* переадресация -- но чтобы не сохранилось в истории посещение этого адреса
-                    передаем дополнительно
-                    */}
-                    <Route path="about-us" element={<Navigate to={"/about"} replace/>}/>
-                    <Route path="posts" element={<Blogpage/>}/>
-                    {/* динамический параметр*/}
-                    <Route path="posts/:id" element={<Postpage/>}/>
-                    {/* хотим чтобы роут был завязан на этой айдишник но отдельный адрес /edit*/}
-                    <Route path="posts/:id/edit" element={<Editpost/>}/>
-
-                    {/* хок для переадресации в него обернем любой приватный роут*/}
-                    <Route path="posts/new" element={
-                        <RequireAuth>
-                            <Createpost/>
-                        </RequireAuth>
-                    }/>
-                    <Route path="login" element={<LoginPage/>}/>
-                    <Route path="*" element={<Notfoundpage/>}/>
-                </Route>
-            </Routes>
+            <RouterProvider router={router}/>
         </AuthProvider>
     );
 }
@@ -57,11 +54,11 @@ function App() {
 export default App;
 
 /*
-useSearchParams - из ссылки обрабатывает поисковые параметры см документацию -  вдоке
-не использют локальное состояние а параметры обновляют прямо в форме - новое значение которое
-вбили устанавливает функция - и вытаскивание из url
+--- Новая версия 6.4 рассматриваем ---
+удаляем BrowserRouter
+берем всю внутрянку из Арр кроме  <Routes> и вставляем в createRoutesFromElements, <Routes> </Routes> - удаляем
+и внутрь Арр вставляем <RouterProvider router={router}/>
 
-сделаем фильтрацию на фронте
 
 
 

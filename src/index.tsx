@@ -8,7 +8,12 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <BrowserRouter>
+  <>
     <App />
-  </BrowserRouter>
+  </>
 );
+/*
+Новая версия 6.4 рассматриваем
+
+удаляем BrowserRouter
+ */
