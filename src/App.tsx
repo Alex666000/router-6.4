@@ -21,7 +21,13 @@ function App() {
                     <Route index element={<Homepage/>}/>
 
                     {/*далее что-то есть после путя about*/}
-                    <Route path="about/*" element={<About/>}/>
+                    <Route path="about/*" element={<About/>}>
+                        {/*и нужно определить в какое место приложения вставлять эти пути
+                        внутри About --- делаем с аутлетом
+                        */}
+                        <Route path="contacts" element={<p>Our contact</p>}/>
+                        <Route path="team" element={<p>Our team</p>}/>
+                    </Route>
 
                     <Route path="about" element={<About/>}/>
                     {/* переадресация -- но чтобы не сохранилось в истории посещение этого адреса

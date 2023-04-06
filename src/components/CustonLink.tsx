@@ -7,8 +7,10 @@ type CustonLinkType = {
 }
 
 export const CustonLink: FC<CustonLinkType> = ({children, to = "", ...props}) => {
-    const match = useMatch(to);
-    // console.log({match});
+    const match = useMatch({
+        path: to,
+        end: to.length === 1,
+    });
 
     return (
         <Link

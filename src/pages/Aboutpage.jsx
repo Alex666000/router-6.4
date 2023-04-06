@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link,Outlet} from "react-router-dom";
 
 const About = () => {
     return (
@@ -9,10 +9,14 @@ const About = () => {
             <li><Link to="contacts">Our Contacts</Link></li>
             <li><Link to="team">Our Team</Link></li>
 
-            <Routes>
+         {/*   закоментили для 2 способа вложенности см Арр -- about:
+         <Routes>
                 <Route path="contacts" element={<p>Our contact</p>}/>
                 <Route path="team" element={<p>Our team</p>}/>
-            </Routes>
+            </Routes>*/}
+
+            {/*в это место вставляем из строк 28 29*/}
+            <Outlet/>
         </div>
     );
 };
@@ -26,4 +30,6 @@ export {About};
 - с линками тоже самое правило...
 
 - МЫ УЖЕ НАХОДИМСЯ В about!!!!
+
+- переделаем кастомную ссылку см. ее...CustonLink
  */
