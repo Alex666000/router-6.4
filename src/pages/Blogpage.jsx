@@ -1,11 +1,10 @@
 import {useEffect, useState} from "react";
-import {Link, useLocation, useSearchParams} from "react-router-dom";
+import {defer, Link, useLocation, useSearchParams,useLoaderData} from "react-router-dom";
 import {BlogFilter} from "../components/BlogFilter";
 
 // на странице блога получим и отрисуем посты:
 const Blogpage = () => {
-    const [posts, setPosts] = useState([]);
-    // console.log(useLocation());
+    const posts = useLoaderData()
 
     let [searchParams, setSearchParams] = useSearchParams();
 
@@ -17,10 +16,7 @@ const Blogpage = () => {
     const startsFrom = latest ? 80 : 1;
 
     useEffect(() => {
-        fetch("https://jsonplaceholder.typicode.com/posts")
-            .then(res => res.json())
-            // установим данные в стейт
-            .then(data => setPosts(data));
+
     }, []);
 
 // отрисовываем посты
@@ -46,9 +42,33 @@ const Blogpage = () => {
     );
 };
 
-export {Blogpage};
+const blogLoader = async ({request, params}) => {
+    // console.log({ request, params })
+
+
+    const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+    return res.json();
+    ;
+};
+// используем лоадер в Арр...
+
+export {Blogpage, blogLoader};
 
 /*
-Вложенные роуты - делали ранее через аутлет лайаут - делают без /
+                 локальный стейт и эффект не нужны:
+params - это когда с динамическими параметрами работаем они тут будут :id
+внутри blogLoader - будет логика что внутри эффекта - только установку данных в локальный стейт удалим
+удалим пустой эффект сверху и внутри эффекта
+------------------------------------------
+const blogLoader = async ({request, params}) => {
+    const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+    return res.json();
+    ----------------------------------------
+};
+полученные данные return res.json() -- будут доступны через useLoaderData() эти возвращенные данные попадут
+слева что выплюнет хук const posts = useLoaderData() - остальная логика отрисовки написана верно...
+
+
+
 
  */

@@ -8,7 +8,7 @@ import {
 
 import {Homepage} from "pages/Homepage";
 import {About} from "pages/Aboutpage";
-import {Blogpage} from "pages/Blogpage";
+import {blogLoader, Blogpage} from "pages/Blogpage";
 import {Notfoundpage} from "pages/Notfoundpage";
 
 import {Layout} from "components/Layout";
@@ -19,7 +19,6 @@ import {LoginPage} from "pages/Loginpage";
 import {RequireAuth} from "hoc/RequireAuth";
 import {AuthProvider} from "hoc/AuthProvider";
 
-
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout/>}>
         <Route index element={<Homepage/>}/>
@@ -29,7 +28,8 @@ const router = createBrowserRouter(createRoutesFromElements(
         </Route>
         <Route path="about" element={<About/>}/>
         <Route path="about-us" element={<Navigate to={"/about"} replace/>}/>
-        <Route path="posts" element={<Blogpage/>}/>
+        {/*loader*/}
+        <Route path="posts" element={<Blogpage/>} loader={blogLoader}/>
         <Route path="posts/:id" element={<Postpage/>}/>
         <Route path="posts/:id/edit" element={<Editpost/>}/>
 
