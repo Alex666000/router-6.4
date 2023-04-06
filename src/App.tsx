@@ -12,7 +12,7 @@ import {blogLoader, Blogpage} from "pages/Blogpage";
 import {Notfoundpage} from "pages/Notfoundpage";
 
 import {Layout} from "components/Layout";
-import {Postpage} from "pages/Postpage";
+import {postLoader, Postpage} from "pages/Postpage";
 import {Createpost} from "pages/Createpost";
 import {Editpost} from "pages/Editpost";
 import {LoginPage} from "pages/Loginpage";
@@ -30,7 +30,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path="about-us" element={<Navigate to={"/about"} replace/>}/>
         {/*loader*/}
         <Route path="posts" element={<Blogpage/>} loader={blogLoader}/>
-        <Route path="posts/:id" element={<Postpage/>}/>
+        <Route path="posts/:id" element={<Postpage/>} loader={postLoader}/>
         <Route path="posts/:id/edit" element={<Editpost/>}/>
 
         <Route path="posts/new" element={
