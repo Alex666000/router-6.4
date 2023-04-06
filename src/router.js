@@ -15,7 +15,14 @@ import { RequireAuth } from './hoc/RequireAuth'
 import ErrorPage from './pages/Errorpage';
 
 const router = createBrowserRouter(createRoutesFromElements(
-    <Route path="/" element={<Layout />}>
+    <Route path="/" element={<Layout />} >
+
+        {/*так как ошибки в js всплывают можно сюда errorElement поставить а не на отдельный роут -
+        - но оставлю ниже....
+        */}
+    {/*<Route path="/" element={<Layout />} errorElement={<ErrorPage/>}>*/}
+
+
         <Route index element={<Homepage />} />
         <Route path="about" element={<About />}>
             <Route path="contacts" element={<p>Our contact</p>} />
@@ -24,10 +31,8 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path="about-us" element={<Navigate to="/about" replace />} />
 
         {/*тут пишется любая ошибк*/}
-        <Route path="posts" element={<Blogpage />} loader={blogLoader} errorElement={<h1>ERROR!!!!!!</h1>} />
+        {/*<Route path="posts" element={<Blogpage />} loader={blogLoader} errorElement={<h1>ERROR!!!!!!</h1>} />*/}
         <Route path="posts" element={<Blogpage />} loader={blogLoader} errorElement={<ErrorPage/>} />
-
-
 
 
         <Route path="posts/:id" element={<Singlepage />} loader={postLoader} />
@@ -54,5 +59,5 @@ export default router
 - errorElememt пишется в router.js
 дока советует обрабатывать ошибки в лоадере или асинхронной функции этого лоадера идем в БлокПейдж где получаем посты -->
 
- -
+ - 2 вариант обработки ошибки: делать проверку на уровне лоадера
  */

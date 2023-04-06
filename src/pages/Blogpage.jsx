@@ -1,5 +1,5 @@
 import {Suspense, useEffect} from "react";
-import {Await, defer, Link, useLoaderData, useSearchParams} from "react-router-dom";
+import {Await, defer, json, Link, useLoaderData, useSearchParams} from "react-router-dom";
 import {BlogFilter} from "../components/BlogFilter";
 
 // на странице блога получим и отрисуем посты:
@@ -51,25 +51,27 @@ const Blogpage = () => {
 };
 
 async function getPosts() {
-    const res = await fetch('https://jsonplaceholder.typicode.com/postsss')
+    const res = await fetch("https://jsonplaceholder.typicode.com/postsss");
 
     // if (!res.ok) {
-    /*          эту ошибку выбросим руками и обработаем в Errorpage...*/
     //     throw new Response('', {status: res.status, statusText: 'Not found!!!'})
     // }
 
-    return res.json()
-};
+    return res.json();
+}
 
-const blogLoader = async ({request, params}) => {
-    // console.log({ request, params })
-    return defer(
-        // возвращаем объект
-        {
-            //будут посты которые получим так:
-            posts: getPosts()
-        })
-        ;
+const blogLoader = async () => {
+    const posts = getPosts();
+// тут обрабатываем ошибку в лоадере но тут нет доступа к res как в getPosts() --  поэтому руками добавим 404
+    // в таком случае рефакторим Errorpage ---> идем туда...
+    if (!posts.length) {
+        // из библы новый доп метод json для обработки с ошибками:
+        throw json({message: "Not Found", reason: "Wrong url"}, {status: 404});
+    }
+
+    return {
+        posts
+    };
 };
 export {Blogpage, blogLoader};
 
